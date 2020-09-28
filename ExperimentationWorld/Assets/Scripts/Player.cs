@@ -33,6 +33,9 @@ public class Player : MonoBehaviour
     bool isLeftButtonDown;
     bool isRightButtonDown;
 
+    float mouseXValue;
+    float mouseYValue;
+
     // Start is called before the first frame update
     void Start() {
         rigidBody = GetComponent<Rigidbody2D>();  
@@ -44,7 +47,9 @@ public class Player : MonoBehaviour
         Jump();
         WallSlide();
         WallJump();
+        MousePosition();
         SetMouseButtons();
+        Push();
     }
 
     private void Walk() {
@@ -109,14 +114,19 @@ public class Player : MonoBehaviour
         wallJumping = false;
     }
 
+    private void MousePosition() {
+        mouseXValue = transform.position.x;
+        mouseYValue = transform.position.y;
+        // Debug.Log("X" + mouseXValue);
+        // Debug.Log("Y" + mouseYValue);
+    }
+
     private void SetMouseButtons() {
         isLeftButtonDown = Input.GetMouseButtonDown(0);
         isRightButtonDown = Input.GetMouseButtonDown(1);
-        if (isLeftButtonDown) {
-            print("Left");
-        }
-        if (isRightButtonDown) {
-            print("Right");
-        }
+    }
+
+    private void Push() {
+
     }
 }
