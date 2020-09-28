@@ -11,7 +11,7 @@ public class ClickPositionManager : MonoBehaviour
 
             clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Debug.Log(clickPosition);
+            // Debug.Log(clickPosition);
         }
     }
 }
