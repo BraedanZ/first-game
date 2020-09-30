@@ -124,7 +124,6 @@ public class Player : MonoBehaviour
     }
 
     public void Push(Vector2 pushablePosition) {
-        isPushing = true;
         float pushableDistanceXSquared = Mathf.Pow((playerXValue - pushablePosition.x), 2);
         float pushableDistanceYSquared = Mathf.Pow((playerYValue - pushablePosition.y), 2);
         float pushableDistanceTotal = Mathf.Sqrt(pushableDistanceXSquared + pushableDistanceYSquared);
@@ -132,7 +131,6 @@ public class Player : MonoBehaviour
         pushDirection.Normalize();
         Vector2 pushVector = pushDirection * pushForce / Mathf.Pow(pushableDistanceTotal, 2);
         rigidBody.AddForce(pushVector);
-        isPushing = false;
     }
 
     // public void SetIsPushingTrue() {
