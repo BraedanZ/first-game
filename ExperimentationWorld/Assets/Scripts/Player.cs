@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     bool isPushing;
     public float pushForce;
-    float pushableDistance;
+    float pushableDistanceSquared;
 
     float playerXValue;
     float playerYValue;
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
 
     public void Push(Vector2 pushablePosition) {
         pushableDistanceSquared = Mathf.Pow(Mathf.Pow((playerXValue - pushablePosition.x), 2) + Mathf.Pow((playerYValue - pushablePosition.y), 2), 2);
-        Vector2 fromPushable = new Vector2(Mathf.Clamp(1 / (playerXValue - pushablePosition.x) * (pushForce / pushableDistance), 0, 1000), Mathf.Clamp(1 / (playerYValue - pushablePosition.y) * (pushForce / pushableDistance), 0, 1000));
+        Vector2 fromPushable = new Vector2(Mathf.Clamp(1 / (playerXValue - pushablePosition.x) * (pushForce / pushableDistanceSquared), 0, 1000), Mathf.Clamp(1 / (playerYValue - pushablePosition.y) * (pushForce / pushableDistanceSquared), 0, 1000));
         rigidBody.AddForce(fromPushable);
     }
 }
