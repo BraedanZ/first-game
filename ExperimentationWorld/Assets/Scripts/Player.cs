@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    Player player;
+
     Rigidbody2D rigidBody;
     float input;
     bool facingRight;
@@ -33,11 +35,16 @@ public class Player : MonoBehaviour
     bool isLeftButtonDown;
     bool isRightButtonDown;
 
-    float mouseXValue;
-    float mouseYValue;
+    bool isPushing;
+    public float pushForce;
+    float pushableDistance;
+
+    float playerXValue;
+    float playerYValue;
 
     // Start is called before the first frame update
     void Start() {
+        player = this;
         rigidBody = GetComponent<Rigidbody2D>();  
     }
 
@@ -47,9 +54,7 @@ public class Player : MonoBehaviour
         Jump();
         WallSlide();
         WallJump();
-        MousePosition();
-        SetMouseButtons();
-        Push();
+        PlayerPosition();
     }
 
     private void Walk() {
@@ -114,19 +119,14 @@ public class Player : MonoBehaviour
         wallJumping = false;
     }
 
-    private void MousePosition() {
-        mouseXValue = transform.position.x;
-        mouseYValue = transform.position.y;
-        // Debug.Log("X" + mouseXValue);
-        // Debug.Log("Y" + mouseYValue);
+    private void PlayerPosition() {
+        playerXValue = player.transform.position.x;
+        playerYValue = player.transform.position.y;
     }
 
-    private void SetMouseButtons() {
-        isLeftButtonDown = Input.GetMouseButtonDown(0);
-        isRightButtonDown = Input.GetMouseButtonDown(1);
-    }
-
-    private void Push() {
-
+    public void Push(Vector2 pushablePosition) {
+        pushableDistanceSquared = Mathf.Pow(Mathf.Pow((playerXValue - pushablePosition.x), 2) + Mathf.Pow((playerYValue - pushablePosition.y), 2), 2);
+        Vector2 fromPushable = new Vector2(Mathf.Clamp(1 / (playerXValue - pushablePosition.x) * (pushForce / pushableDistance), 0, 1000), Mathf.Clamp(1 / (playerYValue - pushablePosition.y) * (pushForce / pushableDistance), 0, 1000));
+        rigidBody.AddForce(fromPushable);
     }
 }
