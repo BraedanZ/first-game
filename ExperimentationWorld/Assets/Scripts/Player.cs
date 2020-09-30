@@ -129,4 +129,24 @@ public class Player : MonoBehaviour
         Vector2 fromPushable = new Vector2(Mathf.Clamp(1 / (playerXValue - pushablePosition.x) * (pushForce / pushableDistanceSquared), 0, 1000), Mathf.Clamp(1 / (playerYValue - pushablePosition.y) * (pushForce / pushableDistanceSquared), 0, 1000));
         rigidBody.AddForce(fromPushable);
     }
+
+    public void BetterPush(Vector2 pushablePosition) {
+        float pushableDistanceXSquared = Mathf.Pow((playerXValue - pushablePosition.x), 2);
+        float pushableDistanceYSquared = Mathf.Pow((playerYValue - pushablePosition.y), 2);
+        float pushableDistanceTotal = Mathf.Sqrt(pushableDistanceXSquared + pushableDistanceYSquared);
+        Vector2 pushDirection = new Vector2(1 / (pushableDistanceXSquared * pushableDistanceTotal), 1 / (pushableDistanceYSquared * pushableDistanceTotal));
+        float pushStrength = pushForce;
+        Vector2 pushVector = pushDirection * pushStrength;
+        rigidBody.AddForce(pushVector);
+    }
+
+    public void EvenBetterPush(Vector2 pushablePosition) {
+        float pushableDistanceXSquared = Mathf.Pow((playerXValue - pushablePosition.x), 2);
+        float pushableDistanceYSquared = Mathf.Pow((playerYValue - pushablePosition.y), 2);
+        float pushableDistanceTotal = Mathf.Sqrt(pushableDistanceXSquared + pushableDistanceYSquared);
+        Vector2 pushDirection = new Vector2(playerXValue - pushablePosition.x, playerYValue - pushablePosition.y);
+        pushDirection.Normalize();
+        Vector2 pushVector = pushDirection * pushForce / pushableDistanceTotal;
+        rigidBody.AddForce(pushVector);
+    }
 }

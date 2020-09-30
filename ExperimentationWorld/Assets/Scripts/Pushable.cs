@@ -25,7 +25,7 @@ public class Pushable : MonoBehaviour {
         //     playerScript.Push(thisPosition);
         // }
         if (isLeftButtonDown) {
-            playerScript.Push(thisPosition);
+            playerScript.EvenBetterPush(thisPosition);
         }
     }
 }
