@@ -42,13 +42,11 @@ public class Player : MonoBehaviour
     float playerXValue;
     float playerYValue;
 
-    // Start is called before the first frame update
     void Start() {
         player = this;
         rigidBody = GetComponent<Rigidbody2D>();  
     }
 
-    // Update is called once per frame
     void Update() {
         Walk();
         Jump();
@@ -59,6 +57,7 @@ public class Player : MonoBehaviour
 
     private void Walk() {
         input = Input.GetAxisRaw("Horizontal");
+        
         rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
 
         if (input < 0 && facingRight) {
@@ -125,28 +124,22 @@ public class Player : MonoBehaviour
     }
 
     public void Push(Vector2 pushablePosition) {
-        pushableDistanceSquared = Mathf.Pow(Mathf.Pow((playerXValue - pushablePosition.x), 2) + Mathf.Pow((playerYValue - pushablePosition.y), 2), 2);
-        Vector2 fromPushable = new Vector2(Mathf.Clamp(1 / (playerXValue - pushablePosition.x) * (pushForce / pushableDistanceSquared), 0, 1000), Mathf.Clamp(1 / (playerYValue - pushablePosition.y) * (pushForce / pushableDistanceSquared), 0, 1000));
-        rigidBody.AddForce(fromPushable);
-    }
-
-    public void BetterPush(Vector2 pushablePosition) {
-        float pushableDistanceXSquared = Mathf.Pow((playerXValue - pushablePosition.x), 2);
-        float pushableDistanceYSquared = Mathf.Pow((playerYValue - pushablePosition.y), 2);
-        float pushableDistanceTotal = Mathf.Sqrt(pushableDistanceXSquared + pushableDistanceYSquared);
-        Vector2 pushDirection = new Vector2(1 / (pushableDistanceXSquared * pushableDistanceTotal), 1 / (pushableDistanceYSquared * pushableDistanceTotal));
-        float pushStrength = pushForce;
-        Vector2 pushVector = pushDirection * pushStrength;
-        rigidBody.AddForce(pushVector);
-    }
-
-    public void EvenBetterPush(Vector2 pushablePosition) {
+        isPushing = true;
         float pushableDistanceXSquared = Mathf.Pow((playerXValue - pushablePosition.x), 2);
         float pushableDistanceYSquared = Mathf.Pow((playerYValue - pushablePosition.y), 2);
         float pushableDistanceTotal = Mathf.Sqrt(pushableDistanceXSquared + pushableDistanceYSquared);
         Vector2 pushDirection = new Vector2(playerXValue - pushablePosition.x, playerYValue - pushablePosition.y);
         pushDirection.Normalize();
-        Vector2 pushVector = pushDirection * pushForce / pushableDistanceTotal;
+        Vector2 pushVector = pushDirection * pushForce / Mathf.Pow(pushableDistanceTotal, 2);
         rigidBody.AddForce(pushVector);
+        isPushing = false;
     }
+
+    // public void SetIsPushingTrue() {
+    //     isPushing = true;
+    // }
+
+    // public void SetIsPushingFalse() {
+    //     isPushing = false;
+    // }
 }
