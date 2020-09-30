@@ -17,13 +17,11 @@ public class Pushable : MonoBehaviour {
 
     void OnMouseUp() {
         isLeftButtonDown = false;
+
     }
 
     void Update() {
         Vector2 thisPosition = new Vector2(this.transform.position.x, this.transform.position.y);
-        // if (Input.GetMouseButtonDown(0)) {
-        //     playerScript.Push(thisPosition);
-        // }
         if (isLeftButtonDown) {
             playerScript.Push(thisPosition);
         }
