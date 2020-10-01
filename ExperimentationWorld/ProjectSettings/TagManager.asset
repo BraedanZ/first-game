@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Pushable
+  - Pusher
   layers:
   - Default
   - TransparentFX
