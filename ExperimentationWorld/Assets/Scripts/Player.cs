@@ -37,7 +37,6 @@ public class Player : MonoBehaviour
 
     bool isPushing;
     public float pushForce;
-    float pushableDistanceSquared;
 
     float playerXValue;
     float playerYValue;
@@ -133,6 +132,7 @@ public class Player : MonoBehaviour
         float pushableDistanceXSquared = Mathf.Pow((playerXValue - pushablePosition.x), 2);
         float pushableDistanceYSquared = Mathf.Pow((playerYValue - pushablePosition.y), 2);
         float pushableDistanceTotal = Mathf.Sqrt(pushableDistanceXSquared + pushableDistanceYSquared);
+        pushableDistanceTotal = Mathf.Max(pushableDistanceTotal, 2.5f);
         Vector2 pushDirection = new Vector2(playerXValue - pushablePosition.x, playerYValue - pushablePosition.y);
         pushDirection.Normalize();
         Vector2 pushVector = pushDirection * pushForce / Mathf.Pow(pushableDistanceTotal, 2);
