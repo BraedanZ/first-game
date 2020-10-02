@@ -22,9 +22,11 @@ public class Pusher : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) {
             if (distance <= clickableRadius) {
                 isClicking = true;
+                playerScript.SetIsPushingTrue();
             }
         } else if (Input.GetMouseButtonUp(0)) {
             isClicking = false;
+            playerScript.SetIsPushingFalse();
         }
         if (isClicking) {
             playerScript.Push(thisPosition);
