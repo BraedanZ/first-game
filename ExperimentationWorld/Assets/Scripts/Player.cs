@@ -59,9 +59,11 @@ public class Player : MonoBehaviour
         input = Input.GetAxisRaw("Horizontal");
         
         if (isPushing) {
-            rigidBody.velocity = new Vector2(input * speed / 3, rigidBody.velocity.y);
+            rigidBody.velocity = new Vector2(input * speed / 2, rigidBody.velocity.y);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, -5 * input), 15.0f * Time.deltaTime);
         } else {
             rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), 15.0f * Time.deltaTime);
         }
 
         if (input < 0 && facingRight) {
