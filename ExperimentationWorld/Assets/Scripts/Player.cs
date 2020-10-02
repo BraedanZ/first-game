@@ -58,7 +58,11 @@ public class Player : MonoBehaviour
     private void Walk() {
         input = Input.GetAxisRaw("Horizontal");
         
-        rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
+        if (isPushing) {
+            rigidBody.velocity = new Vector2(input * speed / 3, rigidBody.velocity.y);
+        } else {
+            rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
+        }
 
         if (input < 0 && facingRight) {
             Flip();
@@ -133,11 +137,11 @@ public class Player : MonoBehaviour
         rigidBody.AddForce(pushVector);
     }
 
-    // public void SetIsPushingTrue() {
-    //     isPushing = true;
-    // }
+    public void SetIsPushingTrue() {
+        isPushing = true;
+    }
 
-    // public void SetIsPushingFalse() {
-    //     isPushing = false;
-    // }
+    public void SetIsPushingFalse() {
+        isPushing = false;
+    }
 }
