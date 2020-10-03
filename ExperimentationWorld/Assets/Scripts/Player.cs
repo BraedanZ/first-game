@@ -49,8 +49,8 @@ public class Player : MonoBehaviour
     void Update() {
         Walk();
         Jump();
-        WallSlide();
-        WallJump();
+        // WallSlide();
+        // WallJump();
         PlayerPosition();
     }
 
