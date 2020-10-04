@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1904570161885637162}
   - component: {fileID: 1904570161885637163}
   m_Layer: 0
-  m_Name: Pusher 1 (2)
+  m_Name: Pusher
   m_TagString: Pusher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,4 +94,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8b8c572ca7642749be2c03548bc58bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickableRadius: 2
+  clickableRadius: 3
