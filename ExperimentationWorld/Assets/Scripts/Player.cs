@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     Player player;
 
+    public GameObject losePanel;
+
     Rigidbody2D rigidBody;
     float input;
     bool facingRight;
@@ -145,5 +147,9 @@ public class Player : MonoBehaviour
 
     public void SetIsPushingFalse() {
         isPushing = false;
+    }
+
+    public void Win() {
+        losePanel.SetActive(true);
     }
 }
