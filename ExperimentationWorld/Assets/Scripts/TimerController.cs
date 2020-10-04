@@ -4,8 +4,8 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class TimerController : MonoBehaviour
-{
+public class TimerController : MonoBehaviour {
+    
     public static TimerController instance;
 
     public Text timeCounter;
