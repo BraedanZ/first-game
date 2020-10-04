@@ -12,7 +12,8 @@ public class Winner : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D hitObject) {
         if (hitObject.tag == "Player") {
-            playerScript.Win();
+            // playerScript.Win();
+            GameController.instance.ShowGameOverScreen();
         }
     }
 }

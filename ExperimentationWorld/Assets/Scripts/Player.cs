@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     Player player;
 
-    public GameObject losePanel;
+    public GameObject winPanel;
 
     Rigidbody2D rigidBody;
     float input;
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
     }
 
     public void Win() {
-        losePanel.SetActive(true);
+        winPanel.SetActive(true);
         GameController.instance.StopTimer();
     }
 }
