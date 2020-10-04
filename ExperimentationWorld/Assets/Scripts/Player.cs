@@ -151,5 +151,6 @@ public class Player : MonoBehaviour
 
     public void Win() {
         losePanel.SetActive(true);
+        GameController.instance.StopTimer();
     }
 }
