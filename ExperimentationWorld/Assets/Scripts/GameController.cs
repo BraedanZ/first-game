@@ -15,6 +15,10 @@ public class GameController : MonoBehaviour {
 
     TimeSpan timePlaying;
 
+    public GameObject winPanel;
+
+    public GameObject gameOverlay;
+
     public bool gamePlaying { get; private set; }
 
     private void Awake() {
@@ -39,12 +43,20 @@ public class GameController : MonoBehaviour {
             elapsedTime = Time.time - startTime;
             timePlaying = TimeSpan.FromSeconds(elapsedTime);
 
-            string timePlayingStr = timePlaying.ToString("hh':'mm':'ss'.'ff");
+            string timePlayingStr = timePlaying.ToString("mm':'ss'.'ff");
             timeCounter.text = timePlayingStr;
         }
     }
 
     public void StopTimer() {
         gamePlaying = false;
+    }
+
+    public void ShowGameOverScreen() {
+        GameController.instance.StopTimer();
+        string timePlayingStr = timePlaying.ToString("mm':'ss'.'ff");
+        winPanel.transform.Find("FinalTime").GetComponent<Text>().text = timePlayingStr;
+        winPanel.SetActive(true);
+        gameOverlay.SetActive(false);
     }
 }
