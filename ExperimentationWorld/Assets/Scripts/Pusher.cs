@@ -28,6 +28,9 @@ public class Pusher : MonoBehaviour
             isClicking = false;
             playerScript.SetIsPushingFalse();
         }
+    }
+
+    void FixedUpdate() {
         if (isClicking) {
             playerScript.Push(thisPosition);
         }
