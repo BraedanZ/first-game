@@ -49,10 +49,19 @@ public class Player : MonoBehaviour
     }
 
     void Update() {
-        Walk();
         Jump();
         // WallSlide();
         // WallJump();
+        if (input < 0 && facingRight) {
+            Flip();
+        } else if (input > 0 && !facingRight) {
+            Flip();
+        }
+    }
+
+    void FixedUpdate() {
+        Walk();
+        
         PlayerPosition();
     }
 
@@ -65,12 +74,6 @@ public class Player : MonoBehaviour
         } else {
             rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), 15.0f * Time.deltaTime);
-        }
-
-        if (input < 0 && facingRight) {
-            Flip();
-        } else if (input > 0 && !facingRight) {
-            Flip();
         }
     }
 
@@ -147,10 +150,5 @@ public class Player : MonoBehaviour
 
     public void SetIsPushingFalse() {
         isPushing = false;
-    }
-
-    public void Win() {
-        winPanel.SetActive(true);
-        GameController.instance.StopTimer();
     }
 }
