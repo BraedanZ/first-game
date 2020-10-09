@@ -151,4 +151,21 @@ public class Player : MonoBehaviour
     public void SetIsPushingFalse() {
         isPushing = false;
     }
+
+    public Pusher GetClosestPushable(Pusher[] pushers) {
+        // int j;
+        Pusher curMin = null;
+        float minDist = Mathf.Infinity;
+        Vector2 currentPos = transform.position;
+        for (int i = 0; i < pushers.Length; i++) {
+            Pusher cur = pushers[i];
+            float dist = Vector2.Distance(cur.transform.position, currentPos);
+            if (dist < minDist) {
+                curMin = cur;
+                minDist = dist;
+                // j = i;
+            }
+        }
+        return curMin;
+    }
 }
