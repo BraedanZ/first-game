@@ -11,9 +11,17 @@ public class Pusher : MonoBehaviour
     public int clickableRadius;
     float distance;
 
+    public float pushDuration;
+    private float pushRemaining;
+
+    public float timeBetweenPushes;
+    private float timeUntilPush;
+
     void Start() {
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         thisPosition = new Vector2(this.transform.position.x, this.transform.position.y);
+        timeUntilPush = 0;
+        pushRemaining = 0;
     }
 
     void Update() {
@@ -21,24 +29,54 @@ public class Pusher : MonoBehaviour
         SetDistance();
         if (Input.GetMouseButtonDown(0)) {
             if (distance <= clickableRadius) {
-                isClicking = true;
-                playerScript.SetIsPushingTrue();
+                PushAvailible();
             }
-        } else if (Input.GetMouseButtonUp(0)) {
-            isClicking = false;
-            playerScript.SetIsPushingFalse();
         }
+        if (pushRemaining <= 0) {
+            SetNotPushing();
+        }
+        DecrementPushRemaining();
+        DecrementTimeUntilPush();
     }
 
     void FixedUpdate() {
-        if (isClicking) {
+        TriggerPush();
+    }
+
+    private void SetDistance() {
+        float distanceX = Mathf.Pow(Mathf.Abs(thisPosition.x - clickPosition.x), 2);
+        float distanceY = Mathf.Pow(Mathf.Abs(thisPosition.y - clickPosition.y), 2);
+        distance = Mathf.Sqrt(distanceX + distanceY);
+    }
+
+    private void PushAvailible() {
+        Debug.Log(timeUntilPush);
+        if (timeUntilPush <= 0) {
+            timeUntilPush = timeBetweenPushes;
+            pushRemaining = pushDuration;
+        }
+    }
+
+    private void TriggerPush() {
+        if (pushRemaining > 0) {
+            playerScript.SetIsPushingTrue();
             playerScript.Push(thisPosition);
         }
     }
 
-    void SetDistance() {
-        float distanceX = Mathf.Pow(Mathf.Abs(thisPosition.x - clickPosition.x), 2);
-        float distanceY = Mathf.Pow(Mathf.Abs(thisPosition.y - clickPosition.y), 2);
-        distance = Mathf.Sqrt(distanceX + distanceY);
+    private void DecrementPushRemaining() {
+        if (pushRemaining > 0) {
+            pushRemaining -= Time.deltaTime;
+        }
+    }
+
+    private void DecrementTimeUntilPush() {
+        if (timeUntilPush > 0) {
+            timeUntilPush -= Time.deltaTime;
+        }
+    }
+
+    private void SetNotPushing() {
+        playerScript.SetIsPushingFalse();
     }
 }
