@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     }
 
     void Update() {
-        Jump();
+        // Jump();
         // WallSlide();
         // WallJump();
         if (input < 0 && facingRight) {
@@ -153,7 +153,6 @@ public class Player : MonoBehaviour
     }
 
     public Pusher GetClosestPushable(Pusher[] pushers) {
-        // int j;
         Pusher curMin = null;
         float minDist = Mathf.Infinity;
         Vector2 currentPos = transform.position;
@@ -163,7 +162,6 @@ public class Player : MonoBehaviour
             if (dist < minDist) {
                 curMin = cur;
                 minDist = dist;
-                // j = i;
             }
         }
         return curMin;
