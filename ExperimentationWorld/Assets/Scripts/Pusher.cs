@@ -17,6 +17,8 @@ public class Pusher : MonoBehaviour
     public float timeBetweenPushes;
     private float timeUntilPush;
 
+    bool isClosest;
+
     void Start() {
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         thisPosition = new Vector2(this.transform.position.x, this.transform.position.y);
@@ -27,8 +29,8 @@ public class Pusher : MonoBehaviour
     void Update() {
         clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         SetDistance();
-        if (Input.GetMouseButtonDown(0)) {
-            if (distance <= clickableRadius) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (isClosest) {
                 PushAvailible();
             }
         }
@@ -78,5 +80,13 @@ public class Pusher : MonoBehaviour
 
     private void SetNotPushing() {
         playerScript.SetIsPushingFalse();
+    }
+
+    public void SetClosest() {
+        isClosest = true;
+    }
+
+    public void UnsetClosest() {
+        isClosest = false;
     }
 }
