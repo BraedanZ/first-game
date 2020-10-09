@@ -29,15 +29,11 @@ public class Pusher : MonoBehaviour
         SetDistance();
         if (Input.GetMouseButtonDown(0)) {
             if (distance <= clickableRadius) {
-                isClicking = true;
-                playerScript.SetIsPushingTrue();
+                PushAvailible();
             }
-        } else if (Input.GetMouseButtonUp(0)) {
-            isClicking = false;
-            playerScript.SetIsPushingFalse();
         }
-        if (isClicking) {
-            PushAvailible();
+        if (pushRemaining <= 0) {
+            SetNotPushing();
         }
         DecrementPushRemaining();
         DecrementTimeUntilPush();
@@ -56,25 +52,30 @@ public class Pusher : MonoBehaviour
     private void PushAvailible() {
         if (timeUntilPush <= 0) {
             timeUntilPush = timeBetweenPushes;
+            pushRemaining = pushDuration;
         }
     }
 
     private void TriggerPush() {
-        pushRemaining = pushDuration;
         if (pushRemaining > 0) {
+            playerScript.SetIsPushingTrue();
             playerScript.Push(thisPosition);
         }
     }
 
     private void DecrementPushRemaining() {
-        if(pushRemaining > 0) {
+        if (pushRemaining > 0) {
             pushRemaining -= Time.deltaTime;
         }
     }
 
     private void DecrementTimeUntilPush() {
-        if(timeUntilPush > 0) {
+        if (timeUntilPush > 0) {
             timeUntilPush -= Time.deltaTime;
         }
+    }
+
+    private void SetNotPushing() {
+        playerScript.SetIsPushingFalse();
     }
 }
