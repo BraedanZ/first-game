@@ -11,9 +11,17 @@ public class Pusher : MonoBehaviour
     public int clickableRadius;
     float distance;
 
+    public float pushDuration;
+    private float pushRemaining;
+
+    public float timeBetweenPushes;
+    private float timeUntilPush;
+
     void Start() {
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         thisPosition = new Vector2(this.transform.position.x, this.transform.position.y);
+        timeUntilPush = 0;
+        pushRemaining = 0;
     }
 
     void Update() {
@@ -28,17 +36,45 @@ public class Pusher : MonoBehaviour
             isClicking = false;
             playerScript.SetIsPushingFalse();
         }
+        if (isClicking) {
+            PushAvailible();
+        }
+        DecrementPushRemaining();
+        DecrementTimeUntilPush();
     }
 
     void FixedUpdate() {
-        if (isClicking) {
+        TriggerPush();
+    }
+
+    private void SetDistance() {
+        float distanceX = Mathf.Pow(Mathf.Abs(thisPosition.x - clickPosition.x), 2);
+        float distanceY = Mathf.Pow(Mathf.Abs(thisPosition.y - clickPosition.y), 2);
+        distance = Mathf.Sqrt(distanceX + distanceY);
+    }
+
+    private void PushAvailible() {
+        if (timeUntilPush <= 0) {
+            timeUntilPush = timeBetweenPushes;
+        }
+    }
+
+    private void TriggerPush() {
+        pushRemaining = pushDuration;
+        if (pushRemaining > 0) {
             playerScript.Push(thisPosition);
         }
     }
 
-    void SetDistance() {
-        float distanceX = Mathf.Pow(Mathf.Abs(thisPosition.x - clickPosition.x), 2);
-        float distanceY = Mathf.Pow(Mathf.Abs(thisPosition.y - clickPosition.y), 2);
-        distance = Mathf.Sqrt(distanceX + distanceY);
+    private void DecrementPushRemaining() {
+        if(pushRemaining > 0) {
+            pushRemaining -= Time.deltaTime;
+        }
+    }
+
+    private void DecrementTimeUntilPush() {
+        if(timeUntilPush > 0) {
+            timeUntilPush -= Time.deltaTime;
+        }
     }
 }
