@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
         // Jump();
         // WallSlide();
         // WallJump();
+        GroundCheck();
         if (input < 0 && facingRight) {
             Flip();
         } else if (input > 0 && !facingRight) {
@@ -65,11 +66,15 @@ public class Player : MonoBehaviour
         PlayerPosition();
     }
 
+    private void GroundCheck() {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+    }
+
     private void Walk() {
         input = Input.GetAxisRaw("Horizontal");
         
-        if (isPushing) {
-            rigidBody.velocity = new Vector2(input * speed / 2, rigidBody.velocity.y);
+        if (!isGrounded) {
+            rigidBody.velocity = new Vector2(input * speed / 5 + rigidBody.velocity.x, rigidBody.velocity.y);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, -5 * input), 15.0f * Time.deltaTime);
         } else {
             rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
@@ -78,8 +83,6 @@ public class Player : MonoBehaviour
     }
 
     private void Jump() {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded) {
             rigidBody.velocity = Vector2.up * jumpForce;
         }
