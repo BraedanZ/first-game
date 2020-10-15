@@ -97,3 +97,4 @@ MonoBehaviour:
   clickableRadius: 3
   pushDuration: 0.4
   timeBetweenPushes: 0.9
+  momentumDuration: 1

@@ -43,6 +43,10 @@ public class Player : MonoBehaviour
     float playerXValue;
     float playerYValue;
 
+    public float momentumDuration;
+    private float momemtumRemaining;
+    bool hasMomentum;
+
     void Start() {
         player = this;
         rigidBody = GetComponent<Rigidbody2D>();  
@@ -58,11 +62,12 @@ public class Player : MonoBehaviour
         } else if (input > 0 && !facingRight) {
             Flip();
         }
+        CheckMomentum();
+        DecrementMomentumRemaining();
     }
 
     void FixedUpdate() {
         Walk();
-        
         PlayerPosition();
     }
 
@@ -73,10 +78,14 @@ public class Player : MonoBehaviour
     private void Walk() {
         input = Input.GetAxisRaw("Horizontal");
         
-        if (!isGrounded) {
-            rigidBody.velocity = new Vector2(input * speed / 5 + rigidBody.velocity.x, rigidBody.velocity.y);
+        if (!isGrounded && hasMomentum) {
+            rigidBody.velocity = new Vector2(input * speed / 4 + rigidBody.velocity.x, rigidBody.velocity.y);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, -5 * input), 15.0f * Time.deltaTime);
-        } else {
+        } else if(!isGrounded) {
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), 15.0f * Time.deltaTime);
+        } 
+        else {
             rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), 15.0f * Time.deltaTime);
         }
@@ -149,6 +158,7 @@ public class Player : MonoBehaviour
 
     public void SetIsPushingTrue() {
         isPushing = true;
+        momemtumRemaining = momentumDuration;
     }
 
     public void SetIsPushingFalse() {
@@ -168,5 +178,19 @@ public class Player : MonoBehaviour
             }
         }
         return curMin;
+    }
+
+    private void CheckMomentum() {
+        if (momemtumRemaining > 0) {
+            hasMomentum = true;
+        } else {
+            hasMomentum = false;
+        }
+    }
+
+    private void DecrementMomentumRemaining() {
+        if (momemtumRemaining > 0) {
+            momemtumRemaining -= Time.deltaTime;
+        }
     }
 }

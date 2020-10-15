@@ -52,7 +52,6 @@ public class Pusher : MonoBehaviour
     }
 
     private void PushAvailible() {
-        Debug.Log(timeUntilPush);
         if (timeUntilPush <= 0) {
             timeUntilPush = timeBetweenPushes;
             pushRemaining = pushDuration;
@@ -81,6 +80,14 @@ public class Pusher : MonoBehaviour
     private void SetNotPushing() {
         playerScript.SetIsPushingFalse();
     }
+
+    // private void SetMomentumTrue() {
+    //     playerScript.SetMomentumTrue();
+    // }
+
+    // private void SetMomentumFalse() {
+    //     playerScript.SetMomentumFalse();
+    // }
 
     public void SetClosest() {
         isClosest = true;
