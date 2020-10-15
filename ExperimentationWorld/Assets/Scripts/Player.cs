@@ -43,6 +43,10 @@ public class Player : MonoBehaviour
     float playerXValue;
     float playerYValue;
 
+    public float momentumDuration;
+    private float momemtumRemaining;
+    bool hasMomentum;
+
     void Start() {
         player = this;
         rigidBody = GetComponent<Rigidbody2D>();  
@@ -52,34 +56,42 @@ public class Player : MonoBehaviour
         // Jump();
         // WallSlide();
         // WallJump();
+        GroundCheck();
         if (input < 0 && facingRight) {
             Flip();
         } else if (input > 0 && !facingRight) {
             Flip();
         }
+        CheckMomentum();
+        DecrementMomentumRemaining();
     }
 
     void FixedUpdate() {
         Walk();
-        
         PlayerPosition();
+    }
+
+    private void GroundCheck() {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
     }
 
     private void Walk() {
         input = Input.GetAxisRaw("Horizontal");
         
-        if (isPushing) {
-            rigidBody.velocity = new Vector2(input * speed / 2, rigidBody.velocity.y);
+        if (!isGrounded && hasMomentum) {
+            rigidBody.velocity = new Vector2(input * speed / 4 + rigidBody.velocity.x, rigidBody.velocity.y);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, -5 * input), 15.0f * Time.deltaTime);
-        } else {
+        } else if(!isGrounded) {
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), 15.0f * Time.deltaTime);
+        } 
+        else {
             rigidBody.velocity = new Vector2(input * speed, rigidBody.velocity.y);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), 15.0f * Time.deltaTime);
         }
     }
 
     private void Jump() {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded) {
             rigidBody.velocity = Vector2.up * jumpForce;
         }
@@ -146,6 +158,7 @@ public class Player : MonoBehaviour
 
     public void SetIsPushingTrue() {
         isPushing = true;
+        momemtumRemaining = momentumDuration;
     }
 
     public void SetIsPushingFalse() {
@@ -165,5 +178,19 @@ public class Player : MonoBehaviour
             }
         }
         return curMin;
+    }
+
+    private void CheckMomentum() {
+        if (momemtumRemaining > 0) {
+            hasMomentum = true;
+        } else {
+            hasMomentum = false;
+        }
+    }
+
+    private void DecrementMomentumRemaining() {
+        if (momemtumRemaining > 0) {
+            momemtumRemaining -= Time.deltaTime;
+        }
     }
 }
