@@ -91,46 +91,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Jump() {
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded) {
-            rigidBody.velocity = Vector2.up * jumpForce;
-        }
-    }
-
-    private void WallSlide() {
-        isToucingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, whatIsGround);
-        if ((isToucingFront && !isGrounded && input != 0) || (wallSliding && isToucingFront && !isGrounded)) {
-            wallSliding = true;
-            wallDirectionRight = facingRight;
-            timeSinceWallSlide = startTimeSinceWallSlide;
-            
-        } else if (timeSinceWallSlide > 0) {
-                timeSinceWallSlide -= stopSlideSpeed * Time.deltaTime;
-                wallSliding = true;
-        } else {
-            wallSliding = false;
-        }
-        if (wallSliding) {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Clamp(rigidBody.velocity.y, -wallSlidingSpeed, float.MaxValue));
-        }
-    }
-
-    private void WallJump() {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && wallSliding) {
-            wallJumping = true;
-            Invoke("SetWallJumpingToFalse", wallJumpTime);
-        }
-
-
-        if (wallJumping) {
-            if (wallDirectionRight) {
-                rigidBody.velocity = new Vector2(xWallForce * -1, yWallForce);
-            } else {
-                rigidBody.velocity = new Vector2(xWallForce, yWallForce);
-            }
-        }
-    }
-
     private void Flip() {
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         facingRight = !facingRight;
@@ -193,4 +153,44 @@ public class Player : MonoBehaviour
             momemtumRemaining -= Time.deltaTime;
         }
     }
+
+    // private void Jump() {
+    //     if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded) {
+    //         rigidBody.velocity = Vector2.up * jumpForce;
+    //     }
+    // }
+
+    // private void WallSlide() {
+    //     isToucingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, whatIsGround);
+    //     if ((isToucingFront && !isGrounded && input != 0) || (wallSliding && isToucingFront && !isGrounded)) {
+    //         wallSliding = true;
+    //         wallDirectionRight = facingRight;
+    //         timeSinceWallSlide = startTimeSinceWallSlide;
+            
+    //     } else if (timeSinceWallSlide > 0) {
+    //             timeSinceWallSlide -= stopSlideSpeed * Time.deltaTime;
+    //             wallSliding = true;
+    //     } else {
+    //         wallSliding = false;
+    //     }
+    //     if (wallSliding) {
+    //         rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Clamp(rigidBody.velocity.y, -wallSlidingSpeed, float.MaxValue));
+    //     }
+    // }
+
+    // private void WallJump() {
+    //     if (Input.GetKeyDown(KeyCode.UpArrow) && wallSliding) {
+    //         wallJumping = true;
+    //         Invoke("SetWallJumpingToFalse", wallJumpTime);
+    //     }
+
+
+    //     if (wallJumping) {
+    //         if (wallDirectionRight) {
+    //             rigidBody.velocity = new Vector2(xWallForce * -1, yWallForce);
+    //         } else {
+    //             rigidBody.velocity = new Vector2(xWallForce, yWallForce);
+    //         }
+    //     }
+    // }
 }
